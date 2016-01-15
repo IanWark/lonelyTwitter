@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class Tweet {
     protected String message;
     private Date date;
-    private Mood[] Moodlist;
+    private List<Mood> Moodlist;
 
 
     public Tweet(String message, Date date) {
