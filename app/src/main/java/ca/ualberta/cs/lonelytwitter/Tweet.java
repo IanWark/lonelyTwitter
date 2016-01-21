@@ -1,5 +1,6 @@
 package ca.ualberta.cs.lonelytwitter;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -8,9 +9,7 @@ import java.util.List;
  */
 public abstract class Tweet {
     protected String message;
-    private Date date;
-    private Mood[] Moodlist;
-
+    protected Date date;
 
     public Tweet(String message, Date date) {
         this.message = message;
@@ -37,13 +36,10 @@ public abstract class Tweet {
         this.date = date;
     }
 
-    public Mood[] getMoodlist() {
-        return Moodlist;
-    }
-
-    public void setMoodlist(Mood[] moodlist) {
-        Moodlist = moodlist;
-    }
-
     abstract public boolean isImportant();
+
+    @Override
+    public String toString() {
+        return date.toString() + " | " + message;
+    }
 }
