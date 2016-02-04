@@ -24,6 +24,14 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * Main activity for a Twitter app that saves Tweets in a TweetList
+ * and displays them. <br>
+ * @see Tweet
+ * @see NormalTweet
+ * @see TweetList
+ */
+
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file.sav";
@@ -69,6 +77,9 @@ public class LonelyTwitterActivity extends Activity {
 
 	}
 
+	/**
+	 * called whenever the app starts
+	 */
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub

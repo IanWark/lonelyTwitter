@@ -1,7 +1,7 @@
 package ca.ualberta.cs.lonelytwitter;
 
 /**
- * Created by wark on 1/14/16.
+ * @see Tweet
  */
 public class ImportantTweet extends Tweet implements Tweetable{
     public ImportantTweet(String message) {

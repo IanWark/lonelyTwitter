@@ -5,7 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by wark on 1/14/16.
+ * A Tweet contains the body of a Tweet as a String <code>message</code>
+ * of less than 140 chars, and the date of the Tweet as <code>date</code>.
+ * @see NormalTweet
+ * @see ImportantTweet
+ * @see TweetList
+ *
  */
 public abstract class Tweet implements Comparable<Tweet>{
     protected String message;
@@ -25,6 +30,11 @@ public abstract class Tweet implements Comparable<Tweet>{
         return date;
     }
 
+    /**
+     *
+     * @param message
+     * @throws TweetTooLongException
+     */
     public void setMessage(String message) throws TweetTooLongException{
         if (message.length() > 140) {
             throw new TweetTooLongException();

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by wark on 1/28/16.
+ * Test TweetList methods
  */
 public class TweetListTest extends ActivityInstrumentationTestCase2 {
     public TweetListTest() {
