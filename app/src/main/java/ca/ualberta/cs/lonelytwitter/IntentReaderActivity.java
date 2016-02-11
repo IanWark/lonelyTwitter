@@ -27,6 +27,15 @@ public class IntentReaderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intent_reader);
 
+        Intent intent = getIntent();
+        mode = intent.getIntExtra(MODE_OF_TRANSFORM_KEY,NORMAL);
+        if (intent.getStringExtra(TEXT_TO_TRANSFORM_KEY) != null){
+            text = transformText(intent.getStringExtra(TEXT_TO_TRANSFORM_KEY));
+        } else {
+            text = "default value";
+        }
+        ((TextView)findViewById(R.id.intentText)).setText(text);
+
         //
         //
 
