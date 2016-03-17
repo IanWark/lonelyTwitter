@@ -11,7 +11,7 @@ import java.util.Date;
 
 import io.searchbox.annotations.JestId;
 
-public abstract class Tweet {
+public abstract class Tweet implements Comparable<Tweet>{
     @JestId
     protected String id;
 
@@ -26,6 +26,14 @@ public abstract class Tweet {
     protected Date date;
     protected String message;
 
+    protected transient Bitmap thumbnail;
+    protected String thumbnailBase64;
+
+    public Tweet(Date date, String message, Bitmap thumbnail) {
+        this.date = date;
+        this.message = message;
+        this.thumbnail = thumbnail;
+    }
 
     public Tweet(Date date, String message) {
         this.date = date;
@@ -35,6 +43,25 @@ public abstract class Tweet {
     public Tweet(String message) {
         this.message = message;
         this.date = new Date();
+    }
+
+    public Bitmap getThumbnail() {
+        if (thumbnail == null && thumbnailBase64 != null) {
+            byte[] decodeString = Base64.decode(thumbnailBase64, Base64.DEFAULT);
+            thumbnail = BitmapFactory.decodeByteArray(decodeString,0,decodeString.length);
+        }
+        return thumbnail;
+    }
+
+    public void setThumbnail(Bitmap newThumbnail) {
+        if (newThumbnail != null) {
+            this.thumbnail = newThumbnail;
+            ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+            newThumbnail.compress(Bitmap.CompressFormat.PNG,100,byteArrayBitmapStream);
+            byte[] b = byteArrayBitmapStream.toByteArray();
+            thumbnailBase64 = Base64.encodeToString(b, Base64.DEFAULT);
+
+        }
     }
 
     public abstract Boolean isImportant();
@@ -69,5 +96,10 @@ public abstract class Tweet {
             }
         }
         return date.toString() + " | " + message;
+    }
+
+
+    public int compareTo(Tweet tweet) {
+        return getDate().compareTo(tweet.getDate());
     }
 }

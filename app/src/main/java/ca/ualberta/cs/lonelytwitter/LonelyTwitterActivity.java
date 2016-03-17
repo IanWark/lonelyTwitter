@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,7 +14,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class LonelyTwitterActivity extends Activity {
@@ -30,6 +36,10 @@ public class LonelyTwitterActivity extends Activity {
         return adapter;
     }
 
+    private ImageButton pictureButton;
+    private Bitmap thumbnail;
+    static final int REQUEST_IMAGE_CAPTURE = 1234;
+
     /**
      * Called when the activity is first created.
      */
@@ -43,6 +53,16 @@ public class LonelyTwitterActivity extends Activity {
 
 
 	// http://developer.android.com/training/camera/photobasics.html
+        pictureButton = (ImageButton) findViewById(R.id.pictureButton);
+        pictureButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                }
+
+            }
+        });
 
 
         saveButton = (Button) findViewById(R.id.saveButton);
@@ -51,10 +71,11 @@ public class LonelyTwitterActivity extends Activity {
             public void onClick(View v) {
                 String text = bodyText.getText().toString();
                 NormalTweet latestTweet = new NormalTweet(text);
-
                 tweets.add(latestTweet);
+                Collections.sort(tweets);
+                Collections.reverse(tweets);
 
-
+                latestTweet.setThumbnail(thumbnail);
                 adapter.notifyDataSetChanged();
 
                 // Add the tweet to Elasticsearch
@@ -62,10 +83,13 @@ public class LonelyTwitterActivity extends Activity {
                 addTweetTask.execute(latestTweet);
 
 
-	// http://stackoverflow.com/questions/11835251/remove-image-resource-of-imagebutton
-
+                // http://stackoverflow.com/questions/11835251/remove-image-resource-of-imagebutton
+                bodyText.setText("");
+                thumbnail = null;
+                pictureButton.setImageResource(android.R.color.transparent);
 
                 setResult(RESULT_OK);
+
             }
         });
     }
@@ -81,6 +105,8 @@ public class LonelyTwitterActivity extends Activity {
         try {
             tweets = new ArrayList<Tweet>();
             tweets.addAll(getTweetsTask.get());
+            Collections.sort(tweets);
+            Collections.reverse(tweets);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -94,5 +120,13 @@ public class LonelyTwitterActivity extends Activity {
     }
 
 	// http://developer.android.com/training/camera/photobasics.html
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            thumbnail = (Bitmap) extras.get("data");
+            pictureButton.setImageBitmap(thumbnail);
+        }
+    }
 
 }
