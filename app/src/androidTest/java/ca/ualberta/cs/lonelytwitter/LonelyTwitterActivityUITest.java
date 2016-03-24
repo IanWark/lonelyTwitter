@@ -13,6 +13,7 @@ public class LonelyTwitterActivityUITest extends ActivityInstrumentationTestCase
 
     private Activity activity;
     private EditText textInput;
+    // 5. got rid of unused instrumentation
 
     public LonelyTwitterActivityUITest() {
         super(LonelyTwitterActivity.class);
@@ -21,7 +22,7 @@ public class LonelyTwitterActivityUITest extends ActivityInstrumentationTestCase
     protected void setUp() throws Exception {
         super.setUp();
         activity = getActivity();
-        textInput = ((EditText) activity.findViewById(ca.ualberta.cs.lonelytwitter.R.id.tweetMessage));
+        textInput = ((EditText) activity.findViewById(ca.ualberta.cs.lonelytwitter.R.id.tweetMessage)); // 1. fixed redundant casting to (button)
     }
 
     //makeTweet(text) fills in the input text field and clicks the 'save' button for the activity under test:

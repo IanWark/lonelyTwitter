@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by Ian on 22/03/2016.
  */
 public class TweetList {
-    final ArrayList<Tweet> tweets;
+    final ArrayList<Tweet> tweets; // 4. made final
 
     public TweetList(){
         tweets = new ArrayList<Tweet>();
